@@ -8,7 +8,9 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
         <link rel="stylesheet" href="/WEB-INF/css/generalStyle.css">
-        <script src="https://use.fontawesome.com/ca2b672bf9.js"></script>
+        <!--script src="https://use.fontawesome.com/ca2b672bf9.js"></script-->
+        <script src="https://kit.fontawesome.com/4367acb6a6.js" crossorigin="anonymous"></script>
+
     </head>
 
     <body>
@@ -21,14 +23,14 @@
 
                 <label for="ricerca"></label>
                 <form id="ricerca" action="ricerca" method="get">
-                    <select class="category" name="genere">
+                    <!--select class="category" name="genere">
                         <option value="" label="" selected> generi </option>
                             <c:forEach items="${generi}" var="genere">
                                 <option value ="<c:out value="${genere.nome}"/>"> <c:out value="${genere.nome}"/> </option>
                             </c:forEach>
-                    </select>
-                    <!-- togliere ajax -->
-                    <input class="searchTerm" type="text" name="ricerca" autocomplete="off" list="ricerca-datalist" placeholder="Ricerca" onkeyup="ricerca(this.value)" value="<c:out value="${param.q}" />">
+                    </select-->
+
+                    <input class="searchTerm" type="text" name="ricerca" autocomplete="off" list="ricerca-datalist" placeholder="Ricerca"/>
                     <datalist id="ricerca-datalist"></datalist>
                     <button class="searchButton" type="submit">
                         <span class="fa fa-search" aria-hidden="true"></span>

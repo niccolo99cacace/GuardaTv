@@ -8,6 +8,7 @@
 <style><%@include file="../css/generalStyle.css"%></style>
 <style><%@include file="../css/contenutoStyle.css"%></style>
 
+<h5 id="notifica">${notifica}</h5>
 <div class="container">
         <div class="contenuto">
             <img src="img/contenuti/${contenuto.immagineDelContenuto}" alt=""/>
@@ -20,22 +21,33 @@
                     </li>
                 </c:forEach>
             </ul>
-        <c:choose>
-            <c:when test="${utente != null}">
-                <form name="addList" action="aggiunta-contenuto-lista" method="post">
-                    <input type="text" name="id" value="<c:out value="${contenuto.id}"/>" hidden>
-                    <label for="selectList"></label>
-                    <select class="listselector" name="nomeLista" id="selectList">
-                        <option value="" label="" selected> liste </option>
-                        <c:forEach items="${liste}" var="lista">
-                            <option value ="<c:out value="${lista.nome}"/>"> <c:out value="${lista.nome}"/>. </option>
-                        </c:forEach>
-                    </select>
-                    <input class="listselector" id="addList" type="submit" value="Aggiungi ">
-                </form>
-                <span id="messaggioConferma"></span>
-            </c:when>
-        </c:choose>
+            <c:choose>
+                <c:when test="${utente != null}">
+                    <form name="addList" action="aggiunta-contenuto-lista" method="post">
+                        <input type="text" name="contenutoId" value="<c:out value="${contenuto.id}"/>" hidden>
+                        <label for="selectList"></label>
+                        <select class="listselector" name="nomeLista" id="selectList">
+                            <option value="" label="" selected> liste </option>
+                            <c:forEach items="${listaDelleListe}" var="lista">
+                                <option value ="<c:out value="${lista.nome}"/>"><c:out value="${lista.nome}"/></option>
+                            </c:forEach>
+                        </select>
+                        <input class="listselector" id="addList" type="submit" value="Aggiungi ">
+                    </form>
+                    <span id="messaggioConferma"></span>
+                </c:when>
+            </c:choose>
+            <h4>Regista: <c:out value="${contenuto.regista}"/></h4>
+            <h4><c:out value="${contenuto.durata}"/>min</h4>
+            <h4>data di rilascio: <c:out value="${contenuto.dataDiUscita}"/></h4>
+            <c:choose>
+                <c:when test="${contenuto.videoTrailer != null}">
+                    <iframe width="560" height="315" src="<c:out value="${contenuto.videoTrailer}"/>"
+                            title="YouTube video player" frameborder="0" allow="accelerometer;
+                            clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+                    </iframe>
+                </c:when>
+            </c:choose>
         </div>
 
 
@@ -51,7 +63,7 @@
                                 </label>
                             </h3>
                             <form name="recensione" id="nuovaRecensione" action="AggiuntaRecensione" method="post">
-                                <input type="text" name="contenuto" value="<c:out value="${contenuto.id}"/>" hidden>
+                                <input type="text" name="id" value="<c:out value="${contenuto.id}"/>" hidden>
                                 <div class="riga1">
                                     <h3 class="nomeutente"> <c:out value="${utente.email}"/> </h3>
                                     <div class="rating">
@@ -97,10 +109,13 @@
                                     </c:forEach>
                                 </p>
                                 <c:if test="${utente.administrator == true}">
-                                    <form class="eliminarecensione">
-                                        <input type="hidden" name="idutente" value=${recensione.utente} />
-                                        <input class="confirmbutton" type="submit" value="f1f8" name="rimozioneRecensione" id="eliminarecensione">
-                                    </form>
+                                    <form class="eliminarecensioneform" action="RimozioneRecensione" method="get">
+                                        <input type="hidden" name="idutente" value="${recensione.utente}"/>
+                                        <input type="hidden" name="id" value="${contenuto.id}"/>
+                                        <button type="submit" class="confirmbutton" id="eliminarecensione" name="rimozioneRecensione">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                   </form>
                                 </c:if>
                             </div>
                             <h4 class="contenutorecensione">
@@ -113,5 +128,6 @@
 
     </div>
 </div>
+<br>
 
 <%@include file="footer.html"%>

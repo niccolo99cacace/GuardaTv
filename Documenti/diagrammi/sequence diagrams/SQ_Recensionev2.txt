@@ -1,0 +1,45 @@
+title SQ_Recensione_10
+
+actor Utente
+boundary ContentList
+control ContentControl
+entity Content
+boundary ContentReviewForm
+control ReviewControl
+entity Recensione
+boundary NewReviewConfirmNotice
+
+activate Utente
+Utente->ContentList: press()
+activate ContentList
+ContentList-->*ContentControl:<<create>>
+
+ContentControl->Content:getById()
+activate Content
+activate ContentControl
+Content->ContentControl:getInfo()
+deactivate Content
+ContentControl-->*ContentReviewForm:<<create>>
+ContentControl->ContentReviewForm:sendInfo()
+activate ContentReviewForm
+
+deactivateafter ContentControl
+deactivate ContentList
+Utente->ContentReviewForm: fillContent()
+deactivateafter ContentReviewForm
+Utente->ContentReviewForm: submit()
+activate ContentReviewForm
+activate ContentControl
+ContentReviewForm-->*ReviewControl: <<create>>
+ContentReviewForm->ReviewControl:submitReview()
+activate ReviewControl
+ReviewControl-->*Recensione:<<create>>
+ReviewControl-->*NewReviewConfirmNotice:<<create>>
+
+ContentControl->ContentReviewForm:destroy()
+destroy ContentReviewForm
+deactivate ContentReviewForm
+deactivate ContentControl
+deactivate ReviewControl
+activate NewReviewConfirmNotice
+NewReviewConfirmNotice->Utente:notifyUtente()
